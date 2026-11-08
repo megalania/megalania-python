@@ -1,0 +1,11 @@
+{
+  "name": "megalania",
+  "owner": { "name": "Megalania", "email": "support@megalania.io" },
+  "plugins": [
+    {
+      "name": "megalania",
+      "source": "./plugin",
+      "description": "Read web pages, map sites, run batches and watch pages with Megalania: a skill plus the Megalania MCP server."
+    }
+  ]
+}

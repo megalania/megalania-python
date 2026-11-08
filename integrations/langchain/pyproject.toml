@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "langchain-megalania"
+version = "0.1.0"
+description = "LangChain document loader and tools for the Megalania scraping API."
+requires-python = ">=3.10"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Megalania" }]
+classifiers = ["Development Status :: 4 - Beta", "Programming Language :: Python :: 3"]
+dependencies = ["megalania>=0.2,<0.3", "langchain-core>=1.0,<2"]
+
+[project.urls]
+Homepage = "https://megalania.io"
+Documentation = "https://docs.megalania.io/integrations/langchain"
+Source = "https://github.com/megalania/megalania-python"
+
+[tool.setuptools]
+packages = ["langchain_megalania"]
+
+[tool.setuptools.package-data]
+langchain_megalania = ["tools.json"]

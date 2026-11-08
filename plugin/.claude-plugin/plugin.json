@@ -1,0 +1,9 @@
+{
+  "name": "megalania",
+  "version": "0.2.0",
+  "description": "Read web pages, map sites, run batches and watch pages with Megalania: a skill plus the Megalania MCP server.",
+  "author": { "name": "Megalania", "email": "support@megalania.io" },
+  "homepage": "https://docs.megalania.io/guides/agent-skill",
+  "license": "MIT",
+  "keywords": ["scraping", "web", "markdown", "mcp"]
+}

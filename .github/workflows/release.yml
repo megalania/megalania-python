@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "megalania-v*"
+      - "langchain-megalania-v*"
+      - "llama-index-readers-megalania-v*"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.13"
+      - name: Build
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          case "${TAG}" in
+            megalania-v*) dir=. ;;
+            langchain-megalania-v*) dir=integrations/langchain ;;
+            llama-index-readers-megalania-v*) dir=integrations/llamaindex ;;
+            *) echo "unknown tag ${TAG}"; exit 1 ;;
+          esac
+          python -m pip install --disable-pip-version-check --require-hashes --only-binary=:all: -r .github/build-requirements.txt
+          python -m build --no-isolation --outdir dist "${dir}"
+          ls dist | grep -q -- "-${TAG##*-v}\.tar\.gz$" || { echo "the built version is not ${TAG##*-v}"; ls dist; exit 1; }
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: dist
+          path: dist/
+          if-no-files-found: error
+
+  publish:
+    needs: build
+    runs-on: ubuntu-24.04
+    environment: ${{ startsWith(github.ref_name, 'langchain-megalania-v') && 'pypi-langchain' || startsWith(github.ref_name, 'llama-index-readers-megalania-v') && 'pypi-llamaindex' || 'pypi' }}
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086

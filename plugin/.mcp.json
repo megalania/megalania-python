@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "megalania": {
+      "type": "http",
+      "url": "https://mcp.megalania.io/"
+    }
+  }
+}
